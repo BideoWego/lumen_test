@@ -17,6 +17,29 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <style>
+      .user {
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
+
+      .user pre {
+        margin-bottom: 0;
+      }
+
+      .user button {
+        border: none;
+      }
+
+      .user button:hover {
+        text-decoration: underline;
+      }
+
+      .user button:focus {
+        outline: none;
+      }
+    </style>
   </head>
   <body>
     <header class="page-header text-center">
@@ -32,7 +55,8 @@
             type="text"
             name="username"
             class="form-control"
-            placeholder="Username">
+            placeholder="Username"
+            autofocus>
         </div>
         <div class="form-group">
           <input type="submit" class="btn btn-primary">
@@ -40,9 +64,23 @@
       </form>
 
       <h2>Users</h2>
-      <?php foreach ($users as $user): ?>
-        <pre><?php echo print_r($user->toJson(), true); ?></pre>
-      <?php  endforeach; ?>
+      <?php if (count($users)): ?>
+          <?php foreach ($users as $user): ?>
+            <div class="user row">
+              <div class="col-xs-11">
+                <pre><?php echo $user->toJson(); ?></pre>
+              </div>
+              <div class="col-xs-1">
+                <form action="/users/<?php echo $user->id; ?>" method="post">
+                  <input type="hidden" name="_method" value="delete">
+                  <button class="text-danger" type="submit">&times;</button>
+                </form>
+              </div>
+            </div>
+          <?php  endforeach; ?>
+      <?php else: ?>
+        <p class="text-muted">No users yet...</p>
+      <?php endif; ?>
     </main>
   </body>
 </html>

@@ -18,9 +18,14 @@ $router->get('/', function () use ($router) {
   return view('home', ['message' => 'Hello Lumen!', 'users' => $users]);
 });
 
-
 $router->post('/users', function (Illuminate\Http\Request $request) use ($router) {
   $username = $request->input('username');
   $user = User::create(['username' => $username]);
+  return redirect('/');
+});
+
+$router->delete('/users/{id}', function ($id) use ($router) {
+  $user = User::find($id);
+  $user->delete();
   return redirect('/');
 });
